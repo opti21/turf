@@ -4,6 +4,7 @@ var UserModel = require("../models/user")
 
 router.get('/', async (req, res) => {
   try {
+    res.locals.title = "Users";
     var result = await UserModel.find().exec();
     res.send(result)
   } catch (err) {
