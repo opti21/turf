@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
         res.redirect('/dashboard').end()
       });
     } else {
-      res.status(500).send("User elaready exists").end()
+      res.status(500).redirect('/dashboard').end()
     }
   } catch (err) {
     console.log(err)
