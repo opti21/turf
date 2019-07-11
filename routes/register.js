@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
   
       User.createUser(newUser, (err, user) => {
         if (err) throw err;
-        res.send(user).end()
+        res.redirect('/dashboard').end()
       });
     } else {
       res.status(500).send("User elaready exists").end()
