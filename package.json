@@ -1,6 +1,6 @@
 {
-  "name": "turf-tracker",
-  "version": "0.0.0",
+  "name": "turf",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
@@ -29,5 +29,8 @@
     "dotenv": "^8.0.0",
     "eslint": "^5.16.0",
     "nodemon": "^1.19.1"
+  },
+  "engines": {
+    "node": "10.16.0"
   }
 }
