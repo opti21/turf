@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
 
 router.get('/', (req, res) => {
   res.locals.title = "Register"
-  res.render('/register')
+  res.render('register/index')
 })
 
 module.exports = router;
