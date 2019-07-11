@@ -1,0 +1,23 @@
+POST http://localhost:3000/registeruser
+Content-Type: application/json
+
+{
+    "username": "opti21",
+    "name": "Brandon Rowe",
+    "email": "browe.media@gmail.com",
+    "password": "SuperSecure!"
+}
+
+###
+
+GET http://localhost:3000/dump
+
+###
+
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "username": "opti21",
+    "password": "SuperSecure!"
+}
