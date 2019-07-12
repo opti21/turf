@@ -1,5 +1,17 @@
 <body>
-    <%- include('../partials/header.ejs') %>
-    <%- include('../partials/errorMessage.ejs') %>
-    Dash Board
+<div class="container">
+	<%- include('../partials/header.ejs') %>
+  <%- include('../partials/errorMessage.ejs') %>
+  <div class="row mt-3">
+    <div class="col-sm">
+    </div>
+    <div class="col-sm">
+			<a href="/jobs" class="btn btn-primary btn-lg btn-block">Jobs</a>
+			<a href="/assignments" class="btn btn-primary btn-lg btn-block">Assignsments</a>
+			<a href="/sections" class="btn btn-primary btn-lg btn-block">Sections</a>
+    </div>
+    <div class="col-sm">
+    </div>
+  </div>  
+</div>
 </body>

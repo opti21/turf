@@ -78,6 +78,8 @@ var loginRouter = require('./routes/login');
 var logoutRouter = require('./routes/logout');
 var dashboardRouter = require('./routes/dashboard');
 var dumpRouter = require('./routes/dump');
+var jobsRouter = require('./routes/jobs');
+var sectionsRouter = require('./routes/sections');
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -86,6 +88,8 @@ app.use('/login', loginRouter)
 app.use('/logout', logoutRouter)
 app.use('/dump', dumpRouter)
 app.use('/dashboard', dashboardRouter)
+app.use('/sections', sectionsRouter)
+app.use('/jobs', jobsRouter)
 
 
 // catch 404 and forward to error handler
