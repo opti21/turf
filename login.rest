@@ -1,11 +1,9 @@
-POST http://localhost:3000/registeruser
+POST http://localhost:3000/sections/add_section
 Content-Type: application/json
 
 {
-    "username": "opti21",
-    "name": "Brandon Rowe",
-    "email": "browe.media@gmail.com",
-    "password": "SuperSecure!"
+    "name": "Goober",
+    "jobs": []
 }
 
 ###

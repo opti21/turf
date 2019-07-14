@@ -3,6 +3,76 @@
   <%- include('../partials/header.ejs') %>
   <%- include('../partials/errorMessage.ejs') %>
   <h1>Sections</h1>
+  <div class="row justify-content-between">
+    <div class="col-4">
+      <button id="addSectionBtn" class="btn btn-primary"> Add Section </button>
+    </div>
+    <div class="col-4 text-right">
+      <button id="delSectionBtn" class="btn btn-danger"> Delete Section </button>
+    </div>
+  </div>
   
-</div>
+  <table class="table mt-3 table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col"># of Jobs</th>
+      </tr>
+    </thead>
+    <tbody>
+        <% sections.forEach(section => { %>
+          <tr>
+            <th scope="row"><%= section.name %></th>
+            <td>0</td>
+          </tr>
+        <% }) %>
+    </tbody>
+  </table>
+  </div>
+<!-- End of Container -->
+<script>
+    $('#addSectionBtn').click(function() {
+      swal.fire({
+        title: 'Enter new Section Name',
+        input: 'text',
+        inputValidator: (value) => {
+          if (!value) {
+            return 'You need to write something!'
+          }
+        },
+        showCloseButton: true
+      }).then(function(result) {
+        var data = {
+            name: result.value,
+            jobs: []
+          }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', './sections/add_section');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                console.log('Success')
+                swal.fire({
+                  title:'Section saved successfully',
+                  type:'success',
+                  timer: 2000,
+                  onBeforeOpen: () => {
+                    Swal.showLoading()
+                  }
+                })
+            }
+            if (xhr.status === 500) {
+              console.log(xhr.responseText)
+              swal.fire ({
+                title: 'Section already Exists',
+                type: 'error'
+              })
+            }
+        };
+        xhr.send(JSON.stringify(data));
+        })
+      
+    })
+  </script>
 </body>
