@@ -3,16 +3,15 @@
   <%- include('../partials/header.ejs') %>
   <%- include('../partials/errorMessage.ejs') %>
   <h1>Sections</h1>
-  <div class="row justify-content-between">
+  <div class="row justify-content-between mb-3">
     <div class="col-4">
       <button id="addSectionBtn" class="btn btn-primary"> Add Section </button>
     </div>
     <div class="col-4 text-right">
-      Search?
     </div>
   </div>
   
-  <table class="table mt-3 table-striped">
+  <table id="section_table" class="table mt-3 table-striped">
     <thead>
       <tr>
         <th scope="col">Name</th>
@@ -25,7 +24,7 @@
           <tr>
             <th scope="row"><%= section.name %></th>
             <td>0</td>
-            <td class="text-right"> <button class="btn btn-danger"> <i class="fas fa-minus-circle"></i> </button> </td>
+            <td class="text-right"> <button class="delete btn btn-danger" id="<%= section.id %>" data-sectionName="<%= section.name %>"> <i class="fas fa-minus-circle"></i> </button> </td>
           </tr>
         <% }) %>
     </tbody>
@@ -33,6 +32,9 @@
   </div>
 <!-- End of Container -->
 <script>
+  $(document).ready(function () {
+    $('#section_table').DataTable();
+
     $('#addSectionBtn').click(function() {
       swal.fire({
         title: 'Enter new Section Name',
@@ -42,48 +44,91 @@
             return 'You need to write something!'
           }
         },
-        showCloseButton: true
-      }).then(function(result) {
-        var data = {
-            name: result.value,
+        showCloseButton: true,
+        showCancelButton: true,
+        preConfirm: (section) => {
+          var data = {
+            name: section,
             jobs: []
           }
 
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', './sections/add_section');
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                console.log('Success')
-                swal.fire({
-                  title:'Section saved successfully',
-                  type:'success',
-                  timer: 2000,
-                  allowOutsideClick: false,
-                  allowEscapeKey: false,
-                  onBeforeOpen: () => {
-                    Swal.showLoading()
-                  },
-                  onClose: () => {
-                    window.location.reload();
-                  }
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST', './sections/add_section');
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          xhr.onload = function() {
+              if (xhr.status === 200) {
+                  console.log('Success')
+                  swal.fire({
+                    title:'Section saved successfully',
+                    type:'success',
+                    timer: 2000,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    onBeforeOpen: () => {
+                      Swal.showLoading()
+                    },
+                    onClose: () => {
+                      window.location.reload();
+                    }
+                  })
+              }
+              if (xhr.status === 500) {
+                console.log(xhr.responseText)
+                swal.fire ({
+                  title: 'Section already Exists',
+                  type: 'error'
                 })
-            }
-            if (xhr.status === 500) {
-              console.log(xhr.responseText)
-              swal.fire ({
-                title: 'Section already Exists',
-                type: 'error'
-              })
-            }
-        };
-        xhr.send(JSON.stringify(data));
-        })
-
-        $('#delSectionBtn').click(function() {
-
-        })
-      
+              }
+          };
+          xhr.send(JSON.stringify(data));
+        }
+      })
     })
+
+    $('.delete.btn').click(function() {
+      var sctnName = $(this).attr('data-sectionName')
+      var sctnId = $(this).attr('id')
+      swal.fire({
+        title: `Are you sure you want to delete ${sctnName}?`,
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+      }).then((result) => {
+        if (result.value) {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', `/sections/delete/${sctnId}`);
+          xhr.onload = function() {
+            if (xhr.status === 200) {
+              Swal.fire({
+                title:'Deleted!',
+                text: `${sctnName} has been deleted.`,
+                type:'success',
+                timer: 2000,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                onBeforeOpen: () => {
+                  Swal.showLoading()
+                },
+                onClose: () => {
+                  window.location.reload();
+                }
+              });
+            } else {
+              Swal.fire(
+                'Uh Oh!',
+                `There was an error deleteing the section Error: ${xhr.responseText}`,
+                'error'
+              )
+            }
+          }
+          xhr.send();
+        }
+      })
+    })
+  })
+    
   </script>
 </body>
